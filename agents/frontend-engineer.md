@@ -18,7 +18,8 @@ Implement and maintain mobile app UI automation and visual validation flows.
 - Test coverage reports
 
 ## Outputs
-- Automated test scripts (Maestro, Appium, Percy, Axe)
+
+- Automated test scripts (Appium + WebdriverIO, Percy, Axe)
 - Visual regression baselines
 
 ## Skills Used

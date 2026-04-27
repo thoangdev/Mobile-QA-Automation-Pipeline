@@ -8,7 +8,7 @@ Enterprise-style mobile testing framework that combines multiple validation laye
 
 | Layer                     | Tool                  |
 | ------------------------- | --------------------- |
-| Smoke Testing             | Maestro               |
+| Smoke Testing             | Appium + WebdriverIO  |
 | Regression Testing        | Appium + WebdriverIO  |
 | API Testing & Performance | Postman + Newman      |
 | Visual Regression         | Percy                 |
@@ -25,12 +25,12 @@ Enterprise-style mobile testing framework that combines multiple validation laye
 
 Most portfolio automation projects stop at basic Appium tests. This project demonstrates how real engineering teams validate mobile apps across every quality dimension before a release:
 
-- Functional testing (smoke + regression)
-- API validation and performance benchmarking
-- Visual regression detection
-- Security scanning
-- Accessibility compliance
-- CI/CD automation with real device cloud execution
+Functional testing (smoke + regression, unified via Appium)
+API validation and performance benchmarking
+Visual regression detection
+Security scanning
+Accessibility compliance
+CI/CD automation with real device cloud execution
 
 This mirrors production release pipelines used by companies shipping iOS and Android apps at scale.
 
@@ -49,7 +49,7 @@ MobSF Security Scan
   ↓
 Postman API Tests (Newman)
   ↓
-Maestro Smoke Tests
+Appium Smoke Tests (@smoke)
   ↓
 Appium Regression Tests  ──┬── Percy Visual Snapshots
                            └── Axe Accessibility Checks
@@ -63,9 +63,9 @@ Slack/Discord Notification
 
 ## Core Features
 
-### Smoke Testing (Maestro)
+### Smoke Testing (Appium + WebdriverIO)
 
-Fast validation of critical flows — must complete in under 5 minutes:
+Fast validation of critical flows — must complete in under 5 minutes. Smoke tests are tagged `@smoke` and run as a subset of the same Appium suite:
 
 - App launch and deep linking
 - Login / logout
@@ -73,9 +73,9 @@ Fast validation of critical flows — must complete in under 5 minutes:
 - Navigation
 - Checkout and payment flow
 
-### Regression Testing (Appium + WebdriverIO)
+### Regression Testing (Appium)
 
-Deep validation of complex workflows:
+Deep validation of complex workflows, run as the full Appium suite (all tests excluding `@smoke`):
 
 - User onboarding and profile updates
 - Settings persistence
@@ -122,6 +122,7 @@ Deep validation of complex workflows:
 
 ## Folder Structure
 
+
 ```txt
 mobile-quality-pipeline/
 │
@@ -135,12 +136,6 @@ mobile-quality-pipeline/
 │   └── ios/
 │       └── app.ipa
 │
-├── maestro/
-│   └── smoke/
-│       ├── login-flow.yaml
-│       ├── onboarding-flow.yaml
-│       └── checkout-flow.yaml
-│
 ├── appium/
 │   ├── config/
 │   │   ├── android.conf.ts
@@ -151,10 +146,13 @@ mobile-quality-pipeline/
 │   │   ├── HomeScreen.ts
 │   │   └── SettingsScreen.ts
 │   └── tests/
+│       ├── smoke/           # (optional) smoke tests, or use tags
+│       │   ├── login.spec.ts
+│       │   └── checkout.spec.ts
 │       └── regression/
-│           ├── login.spec.ts
-│           ├── checkout.spec.ts
-│           └── settings.spec.ts
+│           ├── onboarding.spec.ts
+│           ├── settings.spec.ts
+│           └── ...
 │
 ├── api-tests/
 │   ├── collections/
@@ -182,7 +180,6 @@ mobile-quality-pipeline/
 │
 ├── reports/
 │   ├── appium/
-│   ├── maestro/
 │   ├── api/
 │   ├── percy/
 │   └── security/
@@ -203,7 +200,6 @@ mobile-quality-pipeline/
 | Java (JDK)       | 17+ (required by Appium)                |
 | Android SDK      | API 33+ with `adb` on PATH              |
 | Xcode            | 15+ with iOS Simulator (macOS only)     |
-| Maestro CLI      | Latest (`curl -Ls ... \| bash`)         |
 | Newman CLI       | `npm install -g newman`                 |
 | MobSF            | Self-hosted Docker or cloud instance    |
 | BrowserStack     | Account with App Automate enabled       |
@@ -225,19 +221,13 @@ cd mobile-quality-pipeline
 npm install
 ```
 
-### 3. Install Maestro CLI
-
-```bash
-curl -Ls "https://get.maestro.mobile.dev" | bash
-```
-
-### 4. Install Newman
+### 3. Install Newman
 
 ```bash
 npm install -g newman
 ```
 
-### 5. Setup Environment Variables
+### 4. Setup Environment Variables
 
 ```bash
 cp .env.example .env
@@ -285,8 +275,9 @@ Configure all of the following in **Settings → Secrets → Actions**:
 
 ## Available Commands
 
+
 ```bash
-npm run test:smoke          # Maestro smoke tests
+npm run test:smoke          # Appium smoke tests (tagged)
 npm run test:regression     # Appium regression suite
 npm run test:api            # Newman API tests
 npm run test:visual         # Percy visual snapshots
@@ -297,10 +288,11 @@ npm run pipeline            # Full sequential pipeline
 
 ### package.json Scripts
 
+
 ```json
 {
   "scripts": {
-    "test:smoke":      "maestro test maestro/smoke/",
+    "test:smoke":      "wdio run appium/config/android.conf.ts --grep @smoke",
     "test:regression": "wdio run appium/config/android.conf.ts",
     "test:api":        "newman run api-tests/collections/mobile-api.postman_collection.json --environment api-tests/environments/staging.postman_environment.json",
     "test:visual":     "percy exec -- wdio run appium/config/android.conf.ts",
@@ -354,7 +346,7 @@ jobs:
       - name: Run API Tests
         run: npm run test:api
 
-      - name: Run Maestro Smoke Tests
+      - name: Run Appium Smoke Tests
         run: npm run test:smoke
 
       - name: Run Appium Regression Tests
@@ -384,7 +376,65 @@ jobs:
 
 ---
 
+
 ## Pipeline Workflow
+
+### Step 1 — Security Scan
+
+```bash
+npm run scan:mobsf
+```
+
+Uploads APK/IPA to MobSF and asserts zero critical findings before continuing.
+
+### Step 2 — API Validation
+
+```bash
+npm run test:api
+```
+
+Runs the Postman collection with Newman, validating contracts, schemas, and SLAs against the target environment.
+
+### Step 3 — Smoke Tests (Appium)
+
+```bash
+npm run test:smoke
+```
+
+Runs only Appium tests tagged as `@smoke` for fast validation of critical flows. Pipeline fails fast here if core UX is broken.
+
+### Step 4 — Regression Tests + Visual Snapshots
+
+```bash
+npm run test:regression
+```
+
+Full Appium suite with Percy capturing visual snapshots at key screen transitions.
+
+### Step 5 — Accessibility Checks
+
+```bash
+npm run test:a11y
+```
+
+Axe scans for WCAG 2.1 AA violations across the app's primary flows.
+
+### Step 6 — Notify
+
+Slack/Discord receives a structured summary on every run (pass or fail):
+
+```txt
+Build #124 | main | 2026-04-27
+
+Security:   0 Critical  2 Medium
+API:        14 Passed   1 Failed
+Smoke:      8 Passed    0 Failed
+Regression: 42 Passed   2 Failed
+Visual:     35 Approved 0 Diffs
+A11y:       0 Violations
+
+Reports: github.com/.../actions/runs/124
+```
 
 ### Step 1 — Security Scan
 
@@ -408,7 +458,7 @@ Runs the Postman collection with Newman, validating contracts, schemas, and SLAs
 npm run test:smoke
 ```
 
-Fast Maestro flows covering the golden path. Pipeline fails fast here if core UX is broken.
+Fast Appium flows tagged `@smoke` covering the golden path. Pipeline fails fast here if core UX is broken.
 
 ### Step 4 — Regression Tests + Visual Snapshots
 
@@ -447,12 +497,14 @@ Reports: github.com/.../actions/runs/124
 
 ## Test Rules
 
-### Smoke Tests
+
+### Smoke Tests (Appium)
 - Must run in under 5 minutes
 - Critical flows only — no complex validations
 - Any failure blocks the pipeline immediately
 
-### Regression Tests
+
+### Regression Tests (Appium)
 - Full end-to-end validations on real devices via BrowserStack
 - High-risk workflows only — not exhaustive UI coverage
 - Up to 2 automatic retries for network-flaky specs
@@ -493,7 +545,6 @@ Running this pipeline for a 5–10 engineer team with moderate test volume:
 | Percy                            | Yes               | $99/mo (Starter, 5k snapshots)   |
 | MobSF                            | Yes (self-hosted) | $0 self-hosted / $49+ cloud      |
 | Postman/Newman                   | Yes               | $0 CLI / $19+/mo team            |
-| Maestro                          | Yes               | $0 open-source CLI               |
 | GitHub Actions                   | Yes               | $0-$20/mo; $0.008/min thereafter |
 | Cloud VM (MobSF, reporting, etc) | No                | $20-$50/mo                       |
 | Slack/Discord                    | Yes               | $0 (webhook-based notifications) |
@@ -504,13 +555,14 @@ Running this pipeline for a 5–10 engineer team with moderate test volume:
 
 ---
 
+
 ## Why This Stands Out
 
 Typical QA portfolios show Selenium, basic API tests, and simple scripted automation.
 
 This project demonstrates:
 
-- Mobile automation maturity (Maestro + Appium + WebdriverIO)
+- Mobile automation maturity (Appium + WebdriverIO for all functional flows)
 - Security awareness built into the release gate
 - Visual regression as a first-class check
 - Accessibility compliance integrated at the pipeline level
@@ -530,12 +582,9 @@ Relevant roles:
 ## Future Improvements
 
 - **Firebase Crashlytics integration** — correlate test failures with production crash rates
-- **AI-assisted test generation** — use Claude/GPT to generate Maestro flows from user story descriptions, reducing manual authoring time
-- **Flakiness dashboard** — track per-spec retry rates over time; automatically quarantine specs exceeding a configurable threshold
-- **k6 load testing** — complement Newman performance assertions with backend load simulation before major releases
+- **AI-assisted test generation** — use Claude/GPT to generate Appium test specs from user story descriptions, reducing manual authoring time
 - **Test data factory** — centralized seed/teardown layer so each spec starts from a known state without manual database resets
 - **Detox integration** — add a grey-box layer for React Native apps to complement Appium's black-box coverage
-- **Cross-browser API testing** — extend Newman runs to cover production environment with read-only smoke checks post-deploy
 - **SARIF security report upload** — pipe MobSF findings into GitHub's Security tab via the SARIF format for native code scanning UX
 - **Slack interactive approvals** — let engineers approve Percy visual diffs directly from the Slack notification without opening the dashboard
 
