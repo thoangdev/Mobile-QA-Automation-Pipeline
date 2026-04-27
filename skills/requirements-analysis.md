@@ -1,7 +1,7 @@
 # Skill: Requirements Analysis
 
 ## Purpose
-- Translate business objectives and stakeholder needs into actionable, testable requirements for the mobile QA pipeline.
+Translate business objectives and stakeholder needs into actionable, testable requirements for the mobile QA pipeline.
 
 ## When to Use
 - At project kickoff
@@ -18,7 +18,7 @@
 - Acceptance criteria
 
 ## Constraints
-- Must be clear, measurable, and testable
+- Requirements must be clear, measurable, and testable
 - No ambiguous or duplicate requirements
 
 ## Safety/Performance Considerations

@@ -1,7 +1,7 @@
 # Skill: UI Review
 
 ## Purpose
-- Evaluate mobile app UI for usability, accessibility, and visual consistency as part of automated and manual review.
+Evaluate mobile app UI for usability, accessibility, and visual consistency as part of automated and manual review.
 
 ## When to Use
 - During visual regression and accessibility test planning
@@ -20,5 +20,5 @@
 - No subjective or undocumented feedback
 
 ## Safety/Performance Considerations
-- Ensure reviews do not block critical path unless issues are severe
+- Ensure reviews do not block the critical path unless issues are severe
 - Document all findings for traceability

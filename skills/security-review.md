@@ -1,7 +1,7 @@
 # Skill: Security Review
 
 ## Purpose
-- Assess code, configurations, and pipeline steps for security risks and compliance with best practices.
+Assess code, configurations, and pipeline steps for security risks and compliance with best practices.
 
 ## When to Use
 - Before each release

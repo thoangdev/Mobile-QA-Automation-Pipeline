@@ -1,7 +1,7 @@
 # Skill: API Design
 
 ## Purpose
-- Define, document, and evolve backend API contracts to support automated testing and integrations.
+Define, document, and evolve backend API contracts to support automated testing and integrations.
 
 ## When to Use
 - When new endpoints or integrations are needed
@@ -16,7 +16,7 @@
 - Change logs
 
 ## Constraints
-- Must be versioned and backward compatible
+- APIs must be versioned and backward compatible
 - No breaking changes without review
 
 ## Safety/Performance Considerations

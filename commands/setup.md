@@ -11,7 +11,7 @@ Prepare the local development environment for the Mobile Quality Engineering Pip
 1. Clone the repository
 2. Run `npm install` to install dependencies
 3. Install Maestro CLI and Newman globally
-4. Copy `.env.example` to `.env` and fill in secrets
+4. Copy `.env.example` to `.env` and fill in all required secrets
 5. Verify all required tools are on PATH
 
 ## Expected Output

@@ -1,7 +1,7 @@
 # Skill: Database Design
 
 ## Purpose
-- Design and document data models and test data management strategies for backend and test automation needs.
+Design and document data models and test data management strategies for backend and test automation needs.
 
 ## When to Use
 - When new data storage or test data requirements arise

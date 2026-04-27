@@ -1,7 +1,7 @@
 # Skill: Test Planning
 
 ## Purpose
-- Define, organize, and prioritize test cases and validation strategies for all pipeline layers.
+Define, organize, and prioritize test cases and validation strategies for all pipeline layers.
 
 ## When to Use
 - At the start of each release cycle

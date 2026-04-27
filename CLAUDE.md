@@ -1,27 +1,28 @@
+
 # CLAUDE.md
 
 ## Project Summary
 
-**Mobile Quality Engineering Pipeline** is an enterprise-grade mobile testing framework that unifies functional, API, visual, security, and accessibility validation into a single CI/CD pipeline. It is designed to mirror the quality gates and automation practices of production mobile app release pipelines at scale.
+**Mobile Quality Engineering Pipeline** is an enterprise-grade mobile testing framework. It unifies functional, API, visual, security, and accessibility validation into a single CI/CD pipeline—mirroring the quality gates and automation practices of production mobile app release pipelines at scale.
 
 ## Current Repository Status
-- **README-only starter repo**
-- No source code or configuration files present yet
+- README-only starter repo
+- No source code or configuration files yet
 - All plans, standards, and structure are derived from the README
 
 ## Planned Architecture
-- Modular structure for each validation layer (smoke, regression, API, visual, security, accessibility)
+- Modular structure for each validation layer: smoke, regression, API, visual, security, accessibility
 - CI/CD orchestrated via GitHub Actions
 - Device cloud execution (BrowserStack)
 - TypeScript as the primary language
 - Clear separation of scripts, configs, and test assets
 
 ## Coding Standards
-- TypeScript for all automation and scripts
+- All automation and scripts in TypeScript
 - Linting and formatting enforced via ESLint/Prettier (to be defined)
 - Modular, reusable test flows and helpers
-- No hardcoded secrets; use environment variables and GitHub Secrets
-- Descriptive naming for scripts, tests, and configs
+- No hardcoded secrets—use environment variables and GitHub Secrets
+- Descriptive, consistent naming for scripts, tests, and configs
 
 ## Testing Standards
 - All test types (smoke, regression, API, visual, security, accessibility) must be automated
@@ -50,7 +51,7 @@
 - Skills are atomic, reusable, and not role-specific
 - Agents invoke skills as needed, not vice versa
 - Commands are deterministic, repeatable workflows
-- No skill or command may alter .claude/ unless explicitly required
+- No skill or command may alter `.claude/` unless explicitly required
 
 ## File Structure Overview
 - `/agents/` — role definitions and boundaries
