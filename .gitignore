@@ -1,41 +1,54 @@
-# Node
-# Node dependencies and logs
+# ─── Node ────────────────────────────────────────────────────────────────────
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.npm/
 
-# Environment
-# Environment variables
+# ─── Environment ─────────────────────────────────────────────────────────────
+# Ignore real env files; keep .env.example (it is the committed template)
 .env
-.env.*
+.env.local
+.env.*.local
 
-# Reports and Artifacts
-# Reports and coverage
+# ─── App Binaries ────────────────────────────────────────────────────────────
+# Built APK/IPA files must not be committed — upload via `npm run upload:android|ios`
+apps/**/*.apk
+apps/**/*.ipa
+apps/**/*.aab
+
+# ─── Test Reports & Artifacts ────────────────────────────────────────────────
 reports/
 coverage/
+allure-results/
+allure-report/
 
-# OS
-# macOS and Windows system files
+# ─── WebdriverIO / Appium ────────────────────────────────────────────────────
+.wdio-logs/
+logs/
+wdio-logs/
+
+# ─── Percy ───────────────────────────────────────────────────────────────────
+percy-snapshots/
+
+# ─── Build Outputs ───────────────────────────────────────────────────────────
+dist/
+build/
+*.tsbuildinfo
+
+# ─── OS ──────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# IDE
-# IDE/editor settings
+# ─── IDE / Editor ────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
 
-# Build outputs
-# Build outputs
-dist/
-build/
-
-# Test/Temp
-# Test and temp files
+# ─── Misc ────────────────────────────────────────────────────────────────────
 *.log
 *.tmp
-
-# Misc
-# TypeScript build info
-*.tsbuildinfo
+*.bak

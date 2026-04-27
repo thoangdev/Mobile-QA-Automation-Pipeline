@@ -1,0 +1,173 @@
+{
+  "info": {
+    "_postman_id": "PLACEHOLDER-COLLECTION-ID",
+    "name": "Mobile API — QA Suite",
+    "description": "Contract, schema, SLA, and negative tests for the mobile backend API. Replace placeholder URLs and schema assertions with real values.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url",   "value": "{{BASE_URL}}",   "type": "string" },
+    { "key": "api_version","value": "v1",              "type": "string" },
+    { "key": "auth_token", "value": "",                "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/login — valid credentials",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has access_token', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.property('access_token');",
+                  "  pm.collectionVariables.set('auth_token', body.access_token);",
+                  "});",
+                  "pm.test('Response time < 500ms', () => pm.expect(pm.response.responseTime).to.be.below(500));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{TEST_USERNAME}}\",\n  \"password\": \"{{TEST_PASSWORD}}\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/{{api_version}}/auth/login", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "login"] }
+          }
+        },
+        {
+          "name": "POST /auth/login — invalid credentials (negative)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('Has error field', () => pm.expect(pm.response.json()).to.have.property('error'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"bad@example.com\",\n  \"password\": \"WrongPassword!\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/{{api_version}}/auth/login", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "login"] }
+          }
+        },
+        {
+          "name": "POST /auth/logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 or 204', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": { "raw": "{{base_url}}/{{api_version}}/auth/logout", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "GET /users/me",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Schema valid', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.all.keys('id', 'email', 'name');",
+                  "  // PLACEHOLDER: add full JSON schema validation here",
+                  "});",
+                  "pm.test('Response time < 300ms', () => pm.expect(pm.response.responseTime).to.be.below(300));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": { "raw": "{{base_url}}/{{api_version}}/users/me", "host": ["{{base_url}}"], "path": ["{{api_version}}", "users", "me"] }
+          }
+        },
+        {
+          "name": "PATCH /users/me — update name",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Name updated', () => pm.expect(pm.response.json().name).to.equal('Updated Name'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+              { "key": "Content-Type",  "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}" },
+            "url": { "raw": "{{base_url}}/{{api_version}}/users/me", "host": ["{{base_url}}"], "path": ["{{api_version}}", "users", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products (PLACEHOLDER)",
+      "item": [
+        {
+          "name": "GET /products — list",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns array', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                  "pm.test('Response time < 500ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
+                  "// PLACEHOLDER: add schema assertion per product object"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
+            "url": { "raw": "{{base_url}}/{{api_version}}/products", "host": ["{{base_url}}"], "path": ["{{api_version}}", "products"] }
+          }
+        }
+      ]
+    }
+  ]
+}

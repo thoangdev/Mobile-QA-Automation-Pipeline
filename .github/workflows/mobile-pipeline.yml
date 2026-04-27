@@ -1,0 +1,90 @@
+name: Mobile QA Pipeline
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 2 * * *"   # nightly regression run at 02:00 UTC
+
+jobs:
+  quality-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    # All secrets are declared once here.
+    # Steps reference env.* — never secrets.* directly — so optional steps
+    # can be skipped cleanly when a secret is not yet configured.
+    env:
+      TEST_ENV:      staging
+      TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
+      BROWSERSTACK_USERNAME:   ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      BS_ANDROID_APP_HASH:     ${{ secrets.BS_ANDROID_APP_HASH }}
+      BS_IOS_APP_HASH:         ${{ secrets.BS_IOS_APP_HASH }}
+
+      MOBSF_URL:     ${{ secrets.MOBSF_URL }}
+      MOBSF_API_KEY: ${{ secrets.MOBSF_API_KEY }}
+
+      PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+      SLACK_WEBHOOK:   ${{ secrets.SLACK_WEBHOOK }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── Step 1: Security ────────────────────────────────────────────────────
+      # Skipped automatically if MOBSF_URL / MOBSF_API_KEY secrets are not configured.
+      - name: Run MobSF Security Scan
+        if: ${{ env.MOBSF_URL != '' && env.MOBSF_API_KEY != '' }}
+        run: npm run scan:mobsf
+
+      # ── Step 2: API Validation ──────────────────────────────────────────────
+      - name: Run API Tests (Newman)
+        run: npm run test:api
+
+      # ── Step 3: Smoke Tests ─────────────────────────────────────────────────
+      # Skipped automatically if BrowserStack secrets are not configured.
+      - name: Run Appium Smoke Tests
+        if: ${{ env.BROWSERSTACK_USERNAME != '' && env.BROWSERSTACK_ACCESS_KEY != '' }}
+        run: npm run test:smoke
+
+      # ── Step 4: Regression + Visual Snapshots ───────────────────────────────
+      - name: Run Appium Regression Tests + Percy Snapshots
+        if: ${{ env.BROWSERSTACK_USERNAME != '' && env.BROWSERSTACK_ACCESS_KEY != '' }}
+        run: npm run test:regression
+
+      # ── Step 5: Accessibility ───────────────────────────────────────────────
+      - name: Run Accessibility Checks (Axe)
+        run: npm run test:a11y
+
+      # ── Artifacts ───────────────────────────────────────────────────────────
+      - name: Upload QA Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-reports-${{ github.run_number }}
+          path: reports/
+          retention-days: 30
+
+      # ── Notifications ────────────────────────────────────────────────────────
+      - name: Notify Team (Slack)
+        if: ${{ always() && env.SLACK_WEBHOOK != '' }}
+        run: npm run notify:slack
+
+      - name: Notify Team (Discord)
+        if: ${{ always() && env.DISCORD_WEBHOOK != '' }}
+        run: npm run notify:discord
