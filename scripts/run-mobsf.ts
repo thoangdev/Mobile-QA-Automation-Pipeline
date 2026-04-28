@@ -7,7 +7,7 @@ const SCAN_CONFIG_PATH = 'security/mobsf/scan-config.json';
 interface ScanConfig {
   scan_targets:       { android: string; ios: string };
   report_output:      string;
-  severity_threshold: { block_on: string };
+  severity_threshold: { block_on: string; warn_on: string[] };
 }
 
 interface MobSFUploadResponse { hash: string; file_name: string }

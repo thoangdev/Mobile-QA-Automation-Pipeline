@@ -35,7 +35,7 @@ class CheckoutScreen extends BasePage {
   }
 
   async getOrderId(): Promise<string> {
-    await this.confirmationMessage.waitForDisplayed({ timeout: 10_000 });
+    await this.orderIdLabel.waitForDisplayed({ timeout: 10_000 });
     return this.orderIdLabel.getText();
   }
 }

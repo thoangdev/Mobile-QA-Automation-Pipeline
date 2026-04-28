@@ -46,7 +46,8 @@ class HomeScreen extends BasePage {
     try {
       const badge = $('~cart-badge-count');
       await badge.waitForDisplayed({ timeout: 3_000 });
-      return parseInt(await badge.getText(), 10);
+      const parsed = parseInt(await badge.getText(), 10);
+      return isNaN(parsed) ? 0 : parsed;
     } catch {
       return 0;
     }

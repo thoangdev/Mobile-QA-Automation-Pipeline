@@ -13,6 +13,9 @@ class ProductScreen extends BasePage {
   async tapFirstItem(): Promise<void> {
     await this.waitForLoad();
     const items = await this.productItems;
+    if (items.length === 0) {
+      throw new Error('No product items found on the product screen');
+    }
     await items[0].click();
   }
 
