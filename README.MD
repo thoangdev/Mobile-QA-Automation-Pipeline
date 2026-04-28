@@ -1,6 +1,4 @@
 
-![Mobile QA Tech Stack](https://i.ibb.co/MD8bXWNh/mobile-qa-tech-stack.png)
-
 # Mobile Quality Engineering Pipeline
 
 Enterprise style mobile testing framework that combines multiple validation layers functional, API, visual, security, and accessibility into a single CI/CD pipeline.
@@ -11,18 +9,7 @@ Enterprise style mobile testing framework that combines multiple validation laye
 
 ## Tech Stack
 
-| Layer                     | Tool                  |
-| ------------------------- | --------------------- |
-| Smoke Testing             | Appium + WebdriverIO  |
-| Regression Testing        | Appium + WebdriverIO  |
-| API Testing & Performance | Postman + Newman      |
-| Visual Regression         | Percy                 |
-| Security Scanning         | MobSF                 |
-| Accessibility Testing     | Axe + mobile-a11y     |
-| Cloud Device Testing      | BrowserStack          |
-| CI/CD                     | GitHub Actions        |
-| Notifications             | Slack / Discord       |
-| Language                  | TypeScript            |
+![Mobile QA Tech Stack](https://i.ibb.co/MD8bXWNh/mobile-qa-tech-stack.png)
 
 ---
 
