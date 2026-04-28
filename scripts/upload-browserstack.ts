@@ -14,16 +14,16 @@ function resolvePlatform(arg: string | undefined): Platform {
 }
 
 function resolveAppPath(platform: Platform): string {
-  const appPath = path.resolve(
-    platform === 'android' ? 'apps/android/app.apk' : 'apps/ios/app.ipa',
-  );
-  if (!fs.existsSync(appPath)) {
+  const dir = path.resolve(platform === 'android' ? 'apps/android' : 'apps/ios');
+  const ext = platform === 'android' ? '.apk' : '.ipa';
+  const match = fs.readdirSync(dir).find((f) => f.endsWith(ext));
+  if (!match) {
     throw new Error(
-      `App binary not found at: ${appPath}\n` +
-        `  → Build the app and place the binary there, or update the path in this script.`,
+      `No ${ext} file found in ${dir}/\n` +
+        `  → Place your app binary there (any filename ending in ${ext}).`,
     );
   }
-  return appPath;
+  return path.join(dir, match);
 }
 
 async function uploadApp(platform: Platform): Promise<string> {

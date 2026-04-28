@@ -2,6 +2,8 @@
 
 Enterprise-style mobile testing framework that combines multiple validation layers — functional, API, visual, security, and accessibility — into a single CI/CD pipeline.
 
+**New here?** Start with the [Getting Started guide](GETTING_STARTED.md) for step-by-step setup and onboarding. See [Best Practices](BEST_PRACTICES.md) for guidelines on writing stable, maintainable tests.
+
 ---
 
 ## Tech Stack
@@ -122,7 +124,6 @@ Deep validation of complex workflows, run as the full Appium suite (all tests ex
 
 ## Folder Structure
 
-
 ```txt
 mobile-quality-pipeline/
 │
@@ -132,9 +133,9 @@ mobile-quality-pipeline/
 │
 ├── apps/
 │   ├── android/
-│   │   └── app.apk
+│   │   └── *.apk          (any single .apk — filename doesn't matter)
 │   └── ios/
-│       └── app.ipa
+│       └── *.ipa          (any single .ipa — filename doesn't matter)
 │
 ├── appium/
 │   ├── config/
@@ -194,15 +195,15 @@ mobile-quality-pipeline/
 
 ## Prerequisites
 
-| Requirement      | Version / Notes                          |
-| ---------------- | ---------------------------------------- |
-| Node.js          | 20+ (LTS recommended)                   |
-| Java (JDK)       | 17+ (required by Appium)                |
-| Android SDK      | API 33+ with `adb` on PATH              |
-| Xcode            | 15+ with iOS Simulator (macOS only)     |
-| Newman CLI       | `npm install -g newman`                 |
-| MobSF            | Self-hosted Docker or cloud instance    |
-| BrowserStack     | Account with App Automate enabled       |
+| Requirement | Version / Notes |
+| --- | --- |
+| Node.js | 20+ (LTS recommended) |
+| Java (JDK) | 17+ (required by Appium) |
+| Android SDK | API 33+ with `adb` on PATH |
+| Xcode | 15+ with iOS Simulator (macOS only) |
+| Newman CLI | `npm install -g newman` |
+| MobSF | Self-hosted Docker or cloud instance |
+| BrowserStack | Account with App Automate enabled |
 
 ---
 
@@ -275,7 +276,6 @@ Configure all of the following in **Settings → Secrets → Actions**:
 
 ## Available Commands
 
-
 ```bash
 npm run test:smoke          # Appium smoke tests (tagged)
 npm run test:regression     # Appium regression suite
@@ -287,7 +287,6 @@ npm run pipeline            # Full sequential pipeline
 ```
 
 ### package.json Scripts
-
 
 ```json
 {
@@ -376,7 +375,6 @@ jobs:
 
 ---
 
-
 ## Pipeline Workflow
 
 ### Step 1 — Security Scan
@@ -436,89 +434,35 @@ A11y:       0 Violations
 Reports: github.com/.../actions/runs/124
 ```
 
-### Step 1 — Security Scan
-
-```bash
-npm run scan:mobsf
-```
-
-Uploads APK/IPA to MobSF and asserts zero critical findings before continuing.
-
-### Step 2 — API Validation
-
-```bash
-npm run test:api
-```
-
-Runs the Postman collection with Newman, validating contracts, schemas, and SLAs against the target environment.
-
-### Step 3 — Smoke Tests
-
-```bash
-npm run test:smoke
-```
-
-Fast Appium flows tagged `@smoke` covering the golden path. Pipeline fails fast here if core UX is broken.
-
-### Step 4 — Regression Tests + Visual Snapshots
-
-```bash
-npm run test:regression
-```
-
-Full Appium suite with Percy capturing visual snapshots at key screen transitions.
-
-### Step 5 — Accessibility Checks
-
-```bash
-npm run test:a11y
-```
-
-Axe scans for WCAG 2.1 AA violations across the app's primary flows.
-
-### Step 6 — Notify
-
-Slack/Discord receives a structured summary on every run (pass or fail):
-
-```txt
-Build #124 | main | 2026-04-27
-
-Security:   0 Critical  2 Medium
-API:        14 Passed   1 Failed
-Smoke:      8 Passed    0 Failed
-Regression: 42 Passed   2 Failed
-Visual:     35 Approved 0 Diffs
-A11y:       0 Violations
-
-Reports: github.com/.../actions/runs/124
-```
-
 ---
 
 ## Test Rules
 
-
 ### Smoke Tests (Appium)
+
 - Must run in under 5 minutes
 - Critical flows only — no complex validations
 - Any failure blocks the pipeline immediately
 
-
 ### Regression Tests (Appium)
+
 - Full end-to-end validations on real devices via BrowserStack
 - High-risk workflows only — not exhaustive UI coverage
 - Up to 2 automatic retries for network-flaky specs
 
 ### API Tests
+
 - Validate business-critical endpoints
 - Always run against a seeded, isolated staging environment
 - Never duplicate frontend validation logic
 
 ### Security Tests
+
 - Block release on any critical vulnerability
 - Warn (non-blocking) for medium and low findings
 
 ### Accessibility Tests
+
 - Block release on WCAG 2.1 AA Level violations in primary flows
 - Warn on AA Level violations in secondary flows
 
@@ -550,11 +494,11 @@ Running this pipeline for a 5–10 engineer team with moderate test volume:
 | Slack/Discord                    | Yes               | $0 (webhook-based notifications) |
 
 **Estimated total:**
+
 - **Lean (self-hosted, minimal cloud):** ~$200–$250/month
 - **With cloud MobSF, higher Percy usage, more CI minutes:** ~$350–$400/month
 
 ---
-
 
 ## Why This Stands Out
 
@@ -570,6 +514,7 @@ This project demonstrates:
 - Multi-layer validation strategy that mirrors production release pipelines
 
 Relevant roles:
+
 - QA Lead / QA Manager
 - SDET
 - Mobile QA Engineer
