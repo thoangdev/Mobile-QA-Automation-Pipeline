@@ -1,3 +1,6 @@
+
+![Mobile QA Tech Stack](https://i.ibb.co/MD8bXWNh/mobile-qa-tech-stack.png)
+
 # Mobile Quality Engineering Pipeline
 
 Enterprise style mobile testing framework that combines multiple validation layers functional, API, visual, security, and accessibility into a single CI/CD pipeline.
