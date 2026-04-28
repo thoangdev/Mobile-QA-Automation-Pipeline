@@ -9,7 +9,7 @@ Enterprise style mobile testing framework that combines multiple validation laye
 
 ## Tech Stack
 
-![Mobile QA Tech Stack](https://i.ibb.co/MD8bXWNh/mobile-qa-tech-stack.png)
+![Mobile QA Tech Stack](https://i.ibb.co/7dwY0s1T/3.png)
 
 ---
 
