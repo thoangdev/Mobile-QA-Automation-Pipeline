@@ -10,8 +10,6 @@
 
 ## Tech Stack Overview
 
-![Mobile QA Tech Stack](https://i.ibb.co/MD8bXWNh/mobile-qa-tech-stack.png)
-
 | Layer                     | Tool                  |
 | ------------------------- | --------------------- |
 | Smoke Testing             | Appium + WebdriverIO  |
