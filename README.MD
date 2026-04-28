@@ -1,6 +1,6 @@
 # Mobile Quality Engineering Pipeline
 
-Enterprise-style mobile testing framework that combines multiple validation layers — functional, API, visual, security, and accessibility — into a single CI/CD pipeline.
+Enterprise style mobile testing framework that combines multiple validation layers functional, API, visual, security, and accessibility into a single CI/CD pipeline.
 
 **New here?** Start with the [Getting Started guide](GETTING_STARTED.md) for step-by-step setup and onboarding. See [Best Practices](BEST_PRACTICES.md) for guidelines on writing stable, maintainable tests.
 
