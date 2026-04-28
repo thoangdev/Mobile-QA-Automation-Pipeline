@@ -1,6 +1,8 @@
 import OnboardingScreen from '../../screens/OnboardingScreen';
 import LoginScreen from '../../screens/LoginScreen';
+import ProfileScreen from '../../screens/ProfileScreen';
 import { resetApp } from '../../helpers';
+import { snapshot, Snapshots } from '../../../percy/snapshots';
 
 // PLACEHOLDER: replace with a real API helper that creates/tears down test users
 const NEW_USER = {
@@ -23,28 +25,27 @@ describe('Regression: Onboarding', () => {
 
   it('should display the welcome screen on first launch for a new user', async () => {
     expect(await OnboardingScreen.isDisplayed()).toBe(true);
+    await snapshot(Snapshots.ONBOARDING_STEP_1);
   });
 
-  it.skip('should step through all onboarding pages', async () => {
-    // PLACEHOLDER: tap Next on each page and assert copy / illustration changes
-    // await OnboardingScreen.tapNext();
-    // expect(await $('~onboarding-step-2-title').isDisplayed()).toBe(true);
-    // await OnboardingScreen.tapNext();
-    // ...
+  it('should step through all onboarding pages', async () => {
+    await OnboardingScreen.tapNext();
+    expect(await $('~onboarding-step-2-title').isDisplayed()).toBe(true); // PLACEHOLDER: replace with real step-2 selector
+    await snapshot(Snapshots.ONBOARDING_STEP_2);
+    await OnboardingScreen.tapNext();
+    expect(await $('~onboarding-step-3-title').isDisplayed()).toBe(true); // PLACEHOLDER: replace with real step-3 selector
   });
 
-  it.skip('should grant OS permission prompts during onboarding', async () => {
-    // PLACEHOLDER: handle system dialogs for notifications / location / camera
-    // await OnboardingScreen.allowPermissionIfPresent();
-    // expect(await $('~permission-granted-badge').isDisplayed()).toBe(true);
+  it('should grant OS permission prompts during onboarding', async () => {
+    await OnboardingScreen.allowPermissionIfPresent();
+    // PLACEHOLDER: replace with the real indicator your app shows after permissions are granted
+    expect(await $('~permission-granted-badge').isDisplayed()).toBe(true);
   });
 
-  it.skip('should persist profile data after completing onboarding', async () => {
-    // PLACEHOLDER: complete onboarding and assert data is shown on the profile screen
-    // await OnboardingScreen.completeOnboarding();
-    // const ProfileScreen = require('../../screens/ProfileScreen').default;
-    // await ProfileScreen.waitForLoad();
-    // expect(await ProfileScreen.getDisplayedName()).toBe(NEW_USER.name);
+  it('should persist profile data after completing onboarding', async () => {
+    await OnboardingScreen.completeOnboarding();
+    await ProfileScreen.waitForLoad();
+    expect(await ProfileScreen.getDisplayedName()).toBe(NEW_USER.name);
   });
 
   it('should skip onboarding on subsequent launches', async () => {

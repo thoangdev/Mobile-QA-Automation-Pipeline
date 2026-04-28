@@ -41,6 +41,16 @@ class HomeScreen extends BasePage {
     await this.enterSearchQuery(query);
     await this.submitSearch();
   }
+
+  async getCartBadgeCount(): Promise<number> {
+    try {
+      const badge = $('~cart-badge-count');
+      await badge.waitForDisplayed({ timeout: 3_000 });
+      return parseInt(await badge.getText(), 10);
+    } catch {
+      return 0;
+    }
+  }
 }
 
 export default new HomeScreen();

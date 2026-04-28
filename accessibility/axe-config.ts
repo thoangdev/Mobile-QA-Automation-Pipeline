@@ -47,11 +47,43 @@ export async function runAxeCheck(screenName: string): Promise<void> {
 }
 
 // Standalone runner — invoked by `npm run test:a11y`
-// PLACEHOLDER: replace with actual screens/contexts to audit
+// PLACEHOLDER: Each entry below navigates to a WebView context and audits it.
+// Replace the screen names and add driver navigation before each runAxeCheck call.
 if (require.main === module) {
-  console.log('Axe accessibility runner — wire up screen contexts below.');
-  // Example:
-  // await runAxeCheck('Login Screen');
-  // await runAxeCheck('Home Screen');
-  process.exit(0);
+  const screens: string[] = [
+    'Login Screen',
+    'Home Screen',
+    'Settings Screen',
+    'Search Results',
+    'Checkout — Cart Review',
+    // PLACEHOLDER: add more screens as WebView contexts become available
+  ];
+
+  (async () => {
+    let passed = 0;
+    let failed = 0;
+
+    for (const screen of screens) {
+      try {
+        // PLACEHOLDER: navigate driver to the correct WebView context for each screen
+        // e.g. await driver.switchContext('WEBVIEW_com.your.app');
+        await runAxeCheck(screen);
+        console.log(`  ✓  ${screen}`);
+        passed++;
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(`  ✗  ${screen}\n${message}`);
+        failed++;
+      }
+    }
+
+    console.log(`\nAccessibility audit complete: ${passed} passed, ${failed} failed.`);
+
+    if (failed > 0) {
+      process.exit(1);
+    }
+  })().catch((err) => {
+    console.error('\nFatal error in accessibility runner:\n', err);
+    process.exit(1);
+  });
 }

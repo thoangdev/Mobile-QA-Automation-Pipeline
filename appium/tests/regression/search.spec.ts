@@ -1,6 +1,8 @@
 import HomeScreen from '../../screens/HomeScreen';
 import SearchResultsScreen from '../../screens/SearchResultsScreen';
+import FilterScreen from '../../screens/FilterScreen';
 import { resetApp, loginAs, returnToHome } from '../../helpers';
+import { snapshot, Snapshots } from '../../../percy/snapshots';
 
 describe('Regression: Search & Filters', () => {
   before(async () => {
@@ -16,6 +18,7 @@ describe('Regression: Search & Filters', () => {
   it('should return results for a valid search query', async () => {
     await HomeScreen.search('shoe'); // PLACEHOLDER: replace with a term that returns results
     const count = await SearchResultsScreen.getResultCount();
+    await snapshot(Snapshots.SEARCH_RESULTS);
     expect(count).toBeGreaterThan(0);
   });
 
@@ -24,21 +27,19 @@ describe('Regression: Search & Filters', () => {
     expect(await SearchResultsScreen.isEmptyStateDisplayed()).toBe(true);
   });
 
-  it.skip('should apply a filter and narrow the result set', async () => {
-    // PLACEHOLDER: enter a broad query, open filters, select a category, assert count dropped
-    // await HomeScreen.search('shoe');
-    // const before = await SearchResultsScreen.getResultCount();
-    // await SearchResultsScreen.openFilters();
-    // const FilterScreen = require('../../screens/FilterScreen').default;
-    // await FilterScreen.selectCategory('Sneakers');
-    // const after = await SearchResultsScreen.getResultCount();
-    // expect(after).toBeLessThan(before);
+  it('should apply a filter and narrow the result set', async () => {
+    await HomeScreen.search('shoe');
+    const before = await SearchResultsScreen.getResultCount();
+    await SearchResultsScreen.openFilters();
+    await FilterScreen.selectCategory('Sneakers'); // PLACEHOLDER: replace with a real category
+    await FilterScreen.applyFilters();
+    const after = await SearchResultsScreen.getResultCount();
+    expect(after).toBeLessThan(before);
   });
 
-  it.skip('should clear the search and restore the home view', async () => {
-    // PLACEHOLDER: search, then clear, assert Home content is visible again
-    // await HomeScreen.search('shoe');
-    // await SearchResultsScreen.clearSearch();
-    // expect(await HomeScreen.isDisplayed()).toBe(true);
+  it('should clear the search and restore the home view', async () => {
+    await HomeScreen.search('shoe');
+    await SearchResultsScreen.clearSearch();
+    expect(await HomeScreen.isDisplayed()).toBe(true);
   });
 });

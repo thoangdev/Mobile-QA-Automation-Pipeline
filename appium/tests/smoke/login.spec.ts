@@ -2,6 +2,7 @@ import LoginScreen from '../../screens/LoginScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import SettingsScreen from '../../screens/SettingsScreen';
 import { resetApp, loginAs, Credentials } from '../../helpers';
+import { snapshot, Snapshots } from '../../../percy/snapshots';
 
 describe('@smoke Login', () => {
   beforeEach(async () => {
@@ -10,11 +11,13 @@ describe('@smoke Login', () => {
 
   it('should display the login screen on app launch', async () => {
     expect(await LoginScreen.isDisplayed()).toBe(true);
+    await snapshot(Snapshots.LOGIN);
   });
 
   it('should log in with valid credentials and land on Home', async () => {
     await loginAs();
     expect(await HomeScreen.isDisplayed()).toBe(true);
+    await snapshot(Snapshots.HOME);
   });
 
   it('should show an error message for invalid credentials', async () => {

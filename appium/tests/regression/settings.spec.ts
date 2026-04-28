@@ -2,6 +2,7 @@ import LoginScreen from '../../screens/LoginScreen';
 import HomeScreen from '../../screens/HomeScreen';
 import SettingsScreen from '../../screens/SettingsScreen';
 import { resetApp, loginAs } from '../../helpers';
+import { snapshot, Snapshots } from '../../../percy/snapshots';
 
 // Each test gets a clean session: reset → login → navigate to Settings.
 // This makes every test fully independent and eliminates shared-state failures.
@@ -19,6 +20,7 @@ describe('Regression: Settings', () => {
 
   it('should display the settings screen', async () => {
     expect(await SettingsScreen.isDisplayed()).toBe(true);
+    await snapshot(Snapshots.SETTINGS);
   });
 
   it('should toggle notifications off then back on', async () => {
@@ -45,10 +47,10 @@ describe('Regression: Settings', () => {
     expect(await SettingsScreen.isNotificationsEnabled()).toBe(toggled);
   });
 
-  it.skip('should toggle dark mode and reflect the theme change', async () => {
-    // PLACEHOLDER: toggle dark mode and assert a theme-specific element is visible
-    // await SettingsScreen.toggleDarkMode();
-    // expect(await $('~dark-theme-indicator').isDisplayed()).toBe(true);
+  it('should toggle dark mode and reflect the theme change', async () => {
+    await SettingsScreen.toggleDarkMode();
+    expect(await $('~dark-theme-indicator').isDisplayed()).toBe(true); // PLACEHOLDER: replace with real dark-mode indicator selector
+    await SettingsScreen.toggleDarkMode(); // restore original state
   });
 
   it('should log out and return to the login screen', async () => {
@@ -56,10 +58,14 @@ describe('Regression: Settings', () => {
     expect(await LoginScreen.isDisplayed()).toBe(true);
   });
 
-  it.skip('should handle offline gracefully', async () => {
-    // PLACEHOLDER: disable network, assert graceful error / offline banner appears
-    // await driver.setNetworkConnection(0); // 0 = no connection (Android)
-    // expect(await $('~offline-banner').isDisplayed()).toBe(true);
-    // await driver.setNetworkConnection(6); // restore: wifi + data
+  it('should handle offline gracefully', async () => {
+    // setNetworkConnection: 0 = no connection (Android only)
+    // PLACEHOLDER: for iOS use network conditioner or a proxy instead
+    await driver.setNetworkConnection(0);
+    try {
+      expect(await $('~offline-banner').isDisplayed()).toBe(true); // PLACEHOLDER: replace with real offline indicator selector
+    } finally {
+      await driver.setNetworkConnection(6); // restore: wifi + data
+    }
   });
 });
