@@ -2,13 +2,25 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class OnboardingScreen extends BasePage {
-  private get welcomeTitle()     { return $('~onboarding-welcome-title'); }
-  private get nextButton()       { return $('~onboarding-next-button'); }
-  private get skipButton()       { return $('~onboarding-skip-button'); }
-  private get getStartedButton() { return $('~onboarding-get-started-button'); }
-  private get allowButton()      { return $('~permission-allow-button'); }
+  private get welcomeTitle() {
+    return $('~onboarding-welcome-title');
+  }
+  private get nextButton() {
+    return $('~onboarding-next-button');
+  }
+  private get skipButton() {
+    return $('~onboarding-skip-button');
+  }
+  private get getStartedButton() {
+    return $('~onboarding-get-started-button');
+  }
+  private get allowButton() {
+    return $('~permission-allow-button');
+  }
 
-  protected get anchor()         { return this.welcomeTitle; }
+  protected get anchor() {
+    return this.welcomeTitle;
+  }
 
   async tapNext(): Promise<void> {
     await this.nextButton.waitForDisplayed();

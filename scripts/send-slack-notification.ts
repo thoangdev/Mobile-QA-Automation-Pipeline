@@ -4,13 +4,10 @@ import { buildPipelineSummary, summaryLines } from './lib/pipeline-summary';
 async function sendSlack(): Promise<void> {
   const webhook = Env.slackWebhook; // throws EnvError if not set
   const summary = buildPipelineSummary();
-  const lines   = summaryLines(summary);
+  const lines = summaryLines(summary);
 
   // Wrap the report URL in Slack mrkdwn link syntax
-  const text = [
-    ...lines.slice(0, -1),
-    `<${summary.reportUrl}|View Reports>`,
-  ].join('\n');
+  const text = [...lines.slice(0, -1), `<${summary.reportUrl}|View Reports>`].join('\n');
 
   const payload = {
     blocks: [{ type: 'section', text: { type: 'mrkdwn', text } }],

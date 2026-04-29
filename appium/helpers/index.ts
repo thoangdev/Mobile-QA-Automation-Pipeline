@@ -8,7 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
  * in negative tests — never hardcode values in spec files.
  */
 export const Credentials = {
-  valid:   { username: Env.testUsername, password: Env.testPassword },
+  valid: { username: Env.testUsername, password: Env.testPassword },
   invalid: { username: 'invalid@example.com', password: 'WrongPassword!' },
 } as const;
 

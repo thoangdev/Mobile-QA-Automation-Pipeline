@@ -2,11 +2,19 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class ProfileScreen extends BasePage {
-  private get displayName() { return $('~profile-display-name'); }
-  private get avatar()      { return $('~profile-avatar'); }
-  private get editButton()  { return $('~profile-edit-button'); }
+  private get displayName() {
+    return $('~profile-display-name');
+  }
+  private get avatar() {
+    return $('~profile-avatar');
+  }
+  private get editButton() {
+    return $('~profile-edit-button');
+  }
 
-  protected get anchor()    { return this.displayName; }
+  protected get anchor() {
+    return this.displayName;
+  }
 
   async getDisplayedName(): Promise<string> {
     await this.displayName.waitForDisplayed();

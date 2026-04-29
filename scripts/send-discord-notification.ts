@@ -7,10 +7,7 @@ async function sendDiscord(): Promise<void> {
 
   // Discord renders **bold** not *mrkdwn*, and plain URLs inline
   const lines = summaryLines(summary);
-  const content = [
-    `**${lines[0]}**`,
-    ...lines.slice(1),
-  ].join('\n');
+  const content = [`**${lines[0]}**`, ...lines.slice(1)].join('\n');
 
   const res = await fetch(webhook, {
     method: 'POST',

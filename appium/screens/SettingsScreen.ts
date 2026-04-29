@@ -2,13 +2,25 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class SettingsScreen extends BasePage {
-  private get header()               { return $('~settings-header'); }
-  private get notificationsToggle()  { return $('~notifications-toggle'); }
-  private get darkModeToggle()       { return $('~dark-mode-toggle'); }
-  private get languageSelector()     { return $('~language-selector'); }
-  private get logoutButton()         { return $('~logout-button'); }
+  private get header() {
+    return $('~settings-header');
+  }
+  private get notificationsToggle() {
+    return $('~notifications-toggle');
+  }
+  private get darkModeToggle() {
+    return $('~dark-mode-toggle');
+  }
+  private get languageSelector() {
+    return $('~language-selector');
+  }
+  private get logoutButton() {
+    return $('~logout-button');
+  }
 
-  protected get anchor()             { return this.header; }
+  protected get anchor() {
+    return this.header;
+  }
 
   /**
    * Reads the toggle's `value` attribute.

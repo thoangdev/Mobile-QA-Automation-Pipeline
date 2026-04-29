@@ -1,5 +1,3 @@
-
-
 # CLAUDE.md
 
 ## Project Summary
@@ -10,18 +8,18 @@
 
 ## Tech Stack Overview
 
-| Layer                     | Tool                  |
-| ------------------------- | --------------------- |
-| Smoke Testing             | Appium + WebdriverIO  |
-| Regression Testing        | Appium + WebdriverIO  |
-| API Testing & Performance | Postman + Newman      |
-| Visual Regression         | Percy                 |
-| Security Scanning         | MobSF                 |
-| Accessibility Testing     | Axe + mobile-a11y     |
-| Cloud Device Testing      | BrowserStack          |
-| CI/CD                     | GitHub Actions        |
-| Notifications             | Slack / Discord       |
-| Language                  | TypeScript            |
+| Layer                     | Tool                 |
+| ------------------------- | -------------------- |
+| Smoke Testing             | Appium + WebdriverIO |
+| Regression Testing        | Appium + WebdriverIO |
+| API Testing & Performance | Postman + Newman     |
+| Visual Regression         | Percy                |
+| Security Scanning         | MobSF                |
+| Accessibility Testing     | Axe + mobile-a11y    |
+| Cloud Device Testing      | BrowserStack         |
+| CI/CD                     | GitHub Actions       |
+| Notifications             | Slack / Discord      |
+| Language                  | TypeScript           |
 
 ---
 

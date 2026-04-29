@@ -6,9 +6,9 @@ import { snapshot, Snapshots } from '../../../percy/snapshots';
 
 // PLACEHOLDER: replace with a real API helper that creates/tears down test users
 const NEW_USER = {
-  email:    'new-user@example.com',
+  email: 'new-user@example.com',
   password: 'PlaceholderPassword1!',
-  name:     'Test User',
+  name: 'Test User',
 };
 
 describe('Regression: Onboarding', () => {

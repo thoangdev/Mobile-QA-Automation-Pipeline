@@ -5,17 +5,17 @@
   },
   "scan_targets": {
     "android": "apps/android/app.apk",
-    "ios":     "apps/ios/app.ipa"
+    "ios": "apps/ios/app.ipa"
   },
   "report_output": "reports/security/mobsf-report.json",
   "checks": {
-    "hardcoded_secrets":       true,
-    "insecure_permissions":    true,
-    "debuggable_build":        true,
-    "weak_encryption":         true,
-    "ssl_certificate_issues":  true,
-    "exported_components":     true,
-    "backup_allowed":          true
+    "hardcoded_secrets": true,
+    "insecure_permissions": true,
+    "debuggable_build": true,
+    "weak_encryption": true,
+    "ssl_certificate_issues": true,
+    "exported_components": true,
+    "backup_allowed": true
   },
   "notes": "PLACEHOLDER — adjust severity_threshold and checks to match your app's risk profile and compliance requirements."
 }

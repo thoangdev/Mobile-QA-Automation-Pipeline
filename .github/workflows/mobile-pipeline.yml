@@ -6,7 +6,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 2 * * *"   # nightly regression run at 02:00 UTC
+    - cron: '0 2 * * *' # nightly regression run at 02:00 UTC
 
 jobs:
   quality-pipeline:
@@ -17,21 +17,21 @@ jobs:
     # Steps reference env.* — never secrets.* directly — so optional steps
     # can be skipped cleanly when a secret is not yet configured.
     env:
-      TEST_ENV:      staging
+      TEST_ENV: staging
       TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
       TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
-      BROWSERSTACK_USERNAME:   ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-      BS_ANDROID_APP_HASH:     ${{ secrets.BS_ANDROID_APP_HASH }}
-      BS_IOS_APP_HASH:         ${{ secrets.BS_IOS_APP_HASH }}
+      BS_ANDROID_APP_HASH: ${{ secrets.BS_ANDROID_APP_HASH }}
+      BS_IOS_APP_HASH: ${{ secrets.BS_IOS_APP_HASH }}
 
-      MOBSF_URL:     ${{ secrets.MOBSF_URL }}
+      MOBSF_URL: ${{ secrets.MOBSF_URL }}
       MOBSF_API_KEY: ${{ secrets.MOBSF_API_KEY }}
 
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
-      SLACK_WEBHOOK:   ${{ secrets.SLACK_WEBHOOK }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
     steps:
@@ -40,8 +40,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci

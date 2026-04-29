@@ -2,14 +2,28 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class CheckoutScreen extends BasePage {
-  private get cartList()            { return $('~checkout-cart-list'); }
-  private get proceedButton()       { return $('~checkout-proceed-button'); }
-  private get paymentForm()         { return $('~checkout-payment-form'); }
-  private get confirmButton()       { return $('~checkout-confirm-button'); }
-  private get confirmationMessage() { return $('~checkout-confirmation-message'); }
-  private get orderIdLabel()        { return $('~checkout-order-id'); }
+  private get cartList() {
+    return $('~checkout-cart-list');
+  }
+  private get proceedButton() {
+    return $('~checkout-proceed-button');
+  }
+  private get paymentForm() {
+    return $('~checkout-payment-form');
+  }
+  private get confirmButton() {
+    return $('~checkout-confirm-button');
+  }
+  private get confirmationMessage() {
+    return $('~checkout-confirmation-message');
+  }
+  private get orderIdLabel() {
+    return $('~checkout-order-id');
+  }
 
-  protected get anchor()            { return this.cartList; }
+  protected get anchor() {
+    return this.cartList;
+  }
 
   async proceedToPayment(): Promise<void> {
     await this.waitForLoad();

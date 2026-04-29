@@ -2,18 +2,30 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class ProductScreen extends BasePage {
-  private get productList()     { return $('~product-list'); }
-  private get productItems()    { return $$('~product-item'); }
-  private get addToCartButton() { return $('~add-to-cart-button'); }
-  private get productTitle()    { return $('~product-title'); }
-  private get productPrice()    { return $('~product-price'); }
+  private get productList() {
+    return $('~product-list');
+  }
+  private get productItems() {
+    return $$('~product-item');
+  }
+  private get addToCartButton() {
+    return $('~add-to-cart-button');
+  }
+  private get productTitle() {
+    return $('~product-title');
+  }
+  private get productPrice() {
+    return $('~product-price');
+  }
 
-  protected get anchor()        { return this.productList; }
+  protected get anchor() {
+    return this.productList;
+  }
 
   async tapFirstItem(): Promise<void> {
     await this.waitForLoad();
-    const items = await this.productItems;
-    if (items.length === 0) {
+    const items = this.productItems;
+    if ((await items.length) === 0) {
       throw new Error('No product items found on the product screen');
     }
     await items[0].click();

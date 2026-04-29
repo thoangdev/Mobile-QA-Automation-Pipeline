@@ -27,9 +27,9 @@ function resolveAppPath(platform: Platform): string {
 }
 
 async function uploadApp(platform: Platform): Promise<string> {
-  const appPath    = resolveAppPath(platform);
-  const username   = Env.browserstackUsername;
-  const accessKey  = Env.browserstackAccessKey;
+  const appPath = resolveAppPath(platform);
+  const username = Env.browserstackUsername;
+  const accessKey = Env.browserstackAccessKey;
   const credentials = Buffer.from(`${username}:${accessKey}`).toString('base64');
 
   const form = new FormData();

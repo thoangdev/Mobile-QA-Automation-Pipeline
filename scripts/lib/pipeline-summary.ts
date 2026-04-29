@@ -2,15 +2,15 @@ import { Env } from '../../config/env';
 
 export interface PipelineSummary {
   buildNumber: string;
-  branch:      string;
-  date:        string;
-  security:    string;
-  api:         string;
-  smoke:       string;
-  regression:  string;
-  visual:      string;
-  a11y:        string;
-  reportUrl:   string;
+  branch: string;
+  date: string;
+  security: string;
+  api: string;
+  smoke: string;
+  regression: string;
+  visual: string;
+  a11y: string;
+  reportUrl: string;
 }
 
 /**
@@ -26,14 +26,14 @@ export function buildPipelineSummary(): PipelineSummary {
 
   return {
     buildNumber: runNumber,
-    branch:      Env.githubRefName,
-    date:        new Date().toISOString().split('T')[0]!,
-    security:    Env.reportSecurity,
-    api:         Env.reportApi,
-    smoke:       Env.reportSmoke,
-    regression:  Env.reportRegression,
-    visual:      Env.reportVisual,
-    a11y:        Env.reportA11y,
+    branch: Env.githubRefName,
+    date: new Date().toISOString().split('T')[0],
+    security: Env.reportSecurity,
+    api: Env.reportApi,
+    smoke: Env.reportSmoke,
+    regression: Env.reportRegression,
+    visual: Env.reportVisual,
+    a11y: Env.reportA11y,
     reportUrl,
   };
 }

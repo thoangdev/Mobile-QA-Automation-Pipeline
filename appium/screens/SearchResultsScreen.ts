@@ -2,17 +2,29 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class SearchResultsScreen extends BasePage {
-  private get resultsList()   { return $('~search-results-list'); }
-  private get emptyState()    { return $('~search-empty-state'); }
-  private get filterButton()  { return $('~search-filter-button'); }
-  private get clearButton()   { return $('~search-clear-button'); }
-  private get resultItems()   { return $$('~search-result-item'); }
+  private get resultsList() {
+    return $('~search-results-list');
+  }
+  private get emptyState() {
+    return $('~search-empty-state');
+  }
+  private get filterButton() {
+    return $('~search-filter-button');
+  }
+  private get clearButton() {
+    return $('~search-clear-button');
+  }
+  private get resultItems() {
+    return $$('~search-result-item');
+  }
 
-  protected get anchor()      { return this.resultsList; }
+  protected get anchor() {
+    return this.resultsList;
+  }
 
   async getResultCount(): Promise<number> {
     await this.resultsList.waitForDisplayed();
-    return (await this.resultItems).length;
+    return this.resultItems.length;
   }
 
   async isEmptyStateDisplayed(): Promise<boolean> {

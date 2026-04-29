@@ -8,12 +8,10 @@ type TestEnv = (typeof VALID_ENVS)[number];
 
 function resolveTestEnv(): TestEnv {
   const env = Env.testEnv;
-  if (!VALID_ENVS.includes(env as TestEnv)) {
-    throw new Error(
-      `Invalid TEST_ENV "${env}". Must be one of: ${VALID_ENVS.join(' | ')}`,
-    );
+  if (!VALID_ENVS.includes(env)) {
+    throw new Error(`Invalid TEST_ENV "${env}". Must be one of: ${VALID_ENVS.join(' | ')}`);
   }
-  return env as TestEnv;
+  return env;
 }
 
 function assertFileExists(filePath: string, label: string): void {
@@ -23,11 +21,11 @@ function assertFileExists(filePath: string, label: string): void {
 }
 
 ((): void => {
-  const testEnv        = resolveTestEnv();
-  const reportDir      = 'reports/api';
+  const testEnv = resolveTestEnv();
+  const reportDir = 'reports/api';
   const collectionPath = path.resolve('api-tests/collections/mobile-api.postman_collection.json');
-  const envPath        = path.resolve(`api-tests/environments/${testEnv}.postman_environment.json`);
-  const junitPath      = path.resolve(`${reportDir}/newman-${testEnv}-report.xml`);
+  const envPath = path.resolve(`api-tests/environments/${testEnv}.postman_environment.json`);
+  const junitPath = path.resolve(`${reportDir}/newman-${testEnv}-report.xml`);
 
   assertFileExists(collectionPath, 'Postman collection');
   assertFileExists(envPath, `Postman environment (${testEnv})`);
@@ -38,10 +36,10 @@ function assertFileExists(filePath: string, label: string): void {
 
   newman.run(
     {
-      collection:  collectionPath,
+      collection: collectionPath,
       environment: envPath,
-      reporters:   ['cli', 'junit'],
-      reporter:    { junit: { export: junitPath } },
+      reporters: ['cli', 'junit'],
+      reporter: { junit: { export: junitPath } },
       // Inject credentials from env so the collection never contains real secrets
       envVar: [
         { key: 'TEST_USERNAME', value: Env.testUsername },

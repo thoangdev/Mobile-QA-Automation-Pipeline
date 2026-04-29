@@ -37,7 +37,7 @@ describe('@smoke Checkout', () => {
     await loginAs();
     await driver.execute('mobile: deepLink', {
       url: 'yourapp://checkout', // PLACEHOLDER: replace with your app's deep link scheme
-      package: 'com.your.app',  // PLACEHOLDER: Android only — remove for iOS
+      package: 'com.your.app', // PLACEHOLDER: Android only — remove for iOS
     });
     await CheckoutScreen.waitForLoad();
     expect(await CheckoutScreen.isDisplayed()).toBe(true);

@@ -14,10 +14,10 @@ const A11Y_RULES = {
 
 interface AxeResult {
   violations: Array<{
-    id:          string;
-    impact:      string;
+    id: string;
+    impact: string;
     description: string;
-    nodes:       unknown[];
+    nodes: unknown[];
   }>;
 }
 
@@ -32,7 +32,8 @@ export async function runAxeCheck(screenName: string): Promise<void> {
   const results: AxeResult = await browser.executeAsync(
     (rules: typeof A11Y_RULES, done: (r: AxeResult) => void) => {
       // axe is expected to be injected via the accessibility driver/service
-      // @ts-ignore
+      // @ts-expect-error axe is a browser global injected by the accessibility service
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       axe.run(document, rules, done);
     },
     A11Y_RULES,

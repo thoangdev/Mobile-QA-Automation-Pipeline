@@ -8,14 +8,14 @@ This guide walks you through setting up the Mobile QA Automation Pipeline from s
 
 This is a **full-stack mobile QA pipeline template**. It ships with working test infrastructure across five validation layers:
 
-| Layer | What it checks |
-|---|---|
-| Smoke tests | Critical user flows (login, checkout) pass on every build |
-| Regression tests | Deeper flows (onboarding, search, settings) on real devices |
-| API tests | Backend contracts, schemas, and response time SLAs |
-| Visual regression | Pixel-level UI changes between builds |
-| Security scan | Hardcoded secrets, insecure permissions, weak encryption in the binary |
-| Accessibility | WCAG 2.1 AA compliance in primary flows |
+| Layer             | What it checks                                                         |
+| ----------------- | ---------------------------------------------------------------------- |
+| Smoke tests       | Critical user flows (login, checkout) pass on every build              |
+| Regression tests  | Deeper flows (onboarding, search, settings) on real devices            |
+| API tests         | Backend contracts, schemas, and response time SLAs                     |
+| Visual regression | Pixel-level UI changes between builds                                  |
+| Security scan     | Hardcoded secrets, insecure permissions, weak encryption in the binary |
+| Accessibility     | WCAG 2.1 AA compliance in primary flows                                |
 
 Everything runs end-to-end in GitHub Actions. You adapt it to your app — swap in your selectors, credentials, and app binary, and the pipeline does the rest.
 
@@ -27,27 +27,29 @@ Install all of these before running any commands.
 
 ### Required for all test types
 
-| Tool | Minimum version | Install |
-|---|---|---|
-| Node.js | 20 (LTS) | [nodejs.org](https://nodejs.org) |
-| Git | Any recent | OS package manager |
+| Tool    | Minimum version | Install                          |
+| ------- | --------------- | -------------------------------- |
+| Node.js | 20 (LTS)        | [nodejs.org](https://nodejs.org) |
+| Git     | Any recent      | OS package manager               |
 
 ### Required for Appium (functional / visual / accessibility tests)
 
-| Tool | Minimum version | Notes |
-|---|---|---|
-| Java JDK | 17 | `java -version` to check |
-| Android SDK | API 33+ | Includes `adb`; set `ANDROID_HOME` |
-| Xcode | 15+ | macOS only; iOS Simulator |
-| Appium 2 | 2.5+ | Installed via `npm install` — no global install needed |
+| Tool        | Minimum version | Notes                                                  |
+| ----------- | --------------- | ------------------------------------------------------ |
+| Java JDK    | 17              | `java -version` to check                               |
+| Android SDK | API 33+         | Includes `adb`; set `ANDROID_HOME`                     |
+| Xcode       | 15+             | macOS only; iOS Simulator                              |
+| Appium 2    | 2.5+            | Installed via `npm install` — no global install needed |
 
 **Android SDK setup (quick check):**
+
 ```bash
 echo $ANDROID_HOME   # should print a path like /Users/you/Library/Android/sdk
 adb devices          # should list devices or print an empty list
 ```
 
 **Xcode (macOS only):**
+
 ```bash
 xcode-select --install   # install command line tools if needed
 xcrun simctl list        # should list available simulators
@@ -62,12 +64,12 @@ xcrun simctl list        # should list available simulators
 
 ### Required for each optional service
 
-| Service | What it does | Required? |
-|---|---|---|
-| BrowserStack | Real device test execution | Optional (skipped in CI if missing) |
-| MobSF | Security binary scanning | Optional (skipped in CI if missing) |
-| Percy | Visual snapshot diffing | Optional |
-| Slack / Discord webhook | Build notifications | Optional |
+| Service                 | What it does               | Required?                           |
+| ----------------------- | -------------------------- | ----------------------------------- |
+| BrowserStack            | Real device test execution | Optional (skipped in CI if missing) |
+| MobSF                   | Security binary scanning   | Optional (skipped in CI if missing) |
+| Percy                   | Visual snapshot diffing    | Optional                            |
+| Slack / Discord webhook | Build notifications        | Optional                            |
 
 ---
 
@@ -99,6 +101,7 @@ cp .env.example .env
 Open `.env` and fill in each section. The file is annotated — every key has a comment explaining what it is and where to get the value.
 
 **Minimum required to run anything locally:**
+
 ```env
 TEST_USERNAME=your-test-account@example.com
 TEST_PASSWORD=YourTestPassword
@@ -106,23 +109,27 @@ TEST_ENV=staging
 ```
 
 **Required to run BrowserStack tests:**
+
 ```env
 BROWSERSTACK_USERNAME=your_username
 BROWSERSTACK_ACCESS_KEY=your_key
 ```
 
 **Required for security scanning (MobSF):**
+
 ```env
 MOBSF_URL=http://localhost:8000    # or your hosted MobSF URL
 MOBSF_API_KEY=your_api_key
 ```
 
 **Required for visual testing (Percy):**
+
 ```env
 PERCY_TOKEN=your_percy_token
 ```
 
 **Required for build notifications:**
+
 ```env
 SLACK_WEBHOOK=https://hooks.slack.com/...
 DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
@@ -156,6 +163,7 @@ npm run upload:ios        # finds the .ipa in apps/ios/ and uploads it    → pr
 ```
 
 Set those hashes in `.env`:
+
 ```env
 BS_ANDROID_APP_HASH=bs://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 BS_IOS_APP_HASH=bs://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -164,10 +172,12 @@ BS_IOS_APP_HASH=bs://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 **For local Appium (no BrowserStack):** set the `app` path directly in [appium/config/android.conf.ts](appium/config/android.conf.ts) or [appium/config/ios.conf.ts](appium/config/ios.conf.ts):
 
 ```typescript
-capabilities: [{
-  'appium:app': path.resolve('./apps/android/app.apk'),
-  // ...
-}]
+capabilities: [
+  {
+    'appium:app': path.resolve('./apps/android/app.apk'),
+    // ...
+  },
+];
 ```
 
 ---
@@ -177,6 +187,7 @@ capabilities: [{
 The screen objects in [appium/screens/](appium/screens/) use **placeholder accessibility IDs** that match a generic app. You must replace them with the real element identifiers from your app.
 
 Every screen file contains comments like:
+
 ```typescript
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 ```
@@ -184,6 +195,7 @@ Every screen file contains comments like:
 **How to find the right selectors:**
 
 Use Appium Inspector or `adb uiautomator` to inspect your app's element tree:
+
 ```bash
 # Android — dump the UI hierarchy
 adb shell uiautomator dump /sdcard/dump.xml && adb pull /sdcard/dump.xml ./dump.xml
@@ -228,6 +240,7 @@ await LoginScreen.login(Credentials.invalid.username, Credentials.invalid.passwo
 The Postman collection lives in [api-tests/collections/mobile-api.postman_collection.json](api-tests/collections/mobile-api.postman_collection.json).
 
 Replace the placeholder requests with your app's API endpoints. Environment-specific base URLs are set in:
+
 - [api-tests/environments/staging.postman_environment.json](api-tests/environments/staging.postman_environment.json)
 - [api-tests/environments/production.postman_environment.json](api-tests/environments/production.postman_environment.json)
 
@@ -278,6 +291,7 @@ npm run format:check  # Check formatting without writing
 ## 8. Setting Up CI (GitHub Actions)
 
 The workflow file is at [.github/workflows/mobile-pipeline.yml](.github/workflows/mobile-pipeline.yml). It runs automatically on:
+
 - Every pull request
 - Every push to `main`
 - Nightly at 02:00 UTC
@@ -286,19 +300,19 @@ The workflow file is at [.github/workflows/mobile-pipeline.yml](.github/workflow
 
 Go to **Settings → Secrets and variables → Actions → New repository secret** and add each one:
 
-| Secret | Required? | Where to get it |
-|---|---|---|
-| `TEST_USERNAME` | Yes | Your test account email |
-| `TEST_PASSWORD` | Yes | Your test account password |
-| `BROWSERSTACK_USERNAME` | Optional | BrowserStack dashboard |
-| `BROWSERSTACK_ACCESS_KEY` | Optional | BrowserStack dashboard |
-| `BS_ANDROID_APP_HASH` | Optional | Output of `npm run upload:android` |
-| `BS_IOS_APP_HASH` | Optional | Output of `npm run upload:ios` |
-| `MOBSF_URL` | Optional | Your MobSF instance URL |
-| `MOBSF_API_KEY` | Optional | MobSF API key |
-| `PERCY_TOKEN` | Optional | Percy project settings |
-| `SLACK_WEBHOOK` | Optional | Slack app webhook URL |
-| `DISCORD_WEBHOOK` | Optional | Discord channel webhook URL |
+| Secret                    | Required? | Where to get it                    |
+| ------------------------- | --------- | ---------------------------------- |
+| `TEST_USERNAME`           | Yes       | Your test account email            |
+| `TEST_PASSWORD`           | Yes       | Your test account password         |
+| `BROWSERSTACK_USERNAME`   | Optional  | BrowserStack dashboard             |
+| `BROWSERSTACK_ACCESS_KEY` | Optional  | BrowserStack dashboard             |
+| `BS_ANDROID_APP_HASH`     | Optional  | Output of `npm run upload:android` |
+| `BS_IOS_APP_HASH`         | Optional  | Output of `npm run upload:ios`     |
+| `MOBSF_URL`               | Optional  | Your MobSF instance URL            |
+| `MOBSF_API_KEY`           | Optional  | MobSF API key                      |
+| `PERCY_TOKEN`             | Optional  | Percy project settings             |
+| `SLACK_WEBHOOK`           | Optional  | Slack app webhook URL              |
+| `DISCORD_WEBHOOK`         | Optional  | Discord channel webhook URL        |
 
 > **Tip:** Steps that depend on optional secrets are conditionally skipped. If `BROWSERSTACK_USERNAME` is not set, the smoke and regression steps are skipped automatically — CI still runs API tests and accessibility checks.
 
@@ -308,12 +322,12 @@ Go to **Settings → Secrets and variables → Actions → New repository secret
 
 After each run, reports are written to the `reports/` directory and uploaded as GitHub Actions artifacts (retained for 30 days).
 
-| Directory | Contents |
-|---|---|
-| `reports/appium/` | JUnit XML results from smoke and regression runs |
-| `reports/api/` | Newman JSON/HTML output from API tests |
-| `reports/percy/` | Percy snapshot metadata |
-| `reports/security/` | MobSF scan JSON output |
+| Directory           | Contents                                         |
+| ------------------- | ------------------------------------------------ |
+| `reports/appium/`   | JUnit XML results from smoke and regression runs |
+| `reports/api/`      | Newman JSON/HTML output from API tests           |
+| `reports/percy/`    | Percy snapshot metadata                          |
+| `reports/security/` | MobSF scan JSON output                           |
 
 **In CI:** open the workflow run in GitHub Actions → click **Artifacts** → download `qa-reports-<run-number>.zip`.
 
@@ -346,8 +360,12 @@ Reports: github.com/.../actions/runs/42
 import { BasePage } from './BasePage';
 
 class CartScreen extends BasePage {
-  private get checkoutButton() { return $('~checkout-button'); }
-  protected get anchor()       { return this.checkoutButton; }
+  private get checkoutButton() {
+    return $('~checkout-button');
+  }
+  protected get anchor() {
+    return this.checkoutButton;
+  }
 
   async proceedToCheckout(): Promise<void> {
     await this.waitForLoad();
@@ -401,9 +419,11 @@ Confirm `PERCY_TOKEN` is set. Run `npm run test:visual` locally — Percy prints
 ### MobSF scan fails with connection refused
 
 MobSF must be running before the scan starts. For local use, run it via Docker:
+
 ```bash
 docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
 ```
+
 Then set `MOBSF_URL=http://localhost:8000` in `.env`.
 
 ### `wdio: command not found`
@@ -418,21 +438,21 @@ The screen's `anchor` selector does not match an element in your app. Use Appium
 
 ## What to Customize vs. What to Leave Alone
 
-| File / Directory | Action |
-|---|---|
-| `appium/screens/*.ts` | **Replace** all `~placeholder` selectors with your app's real element IDs |
-| `.env` | **Fill in** every key; never commit this file |
-| `api-tests/collections/` | **Replace** placeholder requests with your API endpoints |
-| `api-tests/environments/` | **Update** `baseUrl` for staging and production |
-| `appium/tests/smoke/` | **Add / modify** tests for your app's critical flows |
-| `appium/tests/regression/` | **Add / modify** tests for your app's deeper flows |
-| `security/mobsf/scan-config.json` | Tune severity thresholds if needed |
-| `accessibility/axe-config.ts` | Tune WCAG rule set if needed |
-| `appium/config/android.conf.ts` | Update device capabilities and BrowserStack device matrix |
-| `appium/config/ios.conf.ts` | Update device capabilities and BrowserStack device matrix |
-| `config/env.ts` | Only modify if you need to add new env vars |
-| `.github/workflows/mobile-pipeline.yml` | Only modify to add new pipeline steps |
-| `scripts/` | Only modify if you need custom reporting or upload logic |
+| File / Directory                        | Action                                                                    |
+| --------------------------------------- | ------------------------------------------------------------------------- |
+| `appium/screens/*.ts`                   | **Replace** all `~placeholder` selectors with your app's real element IDs |
+| `.env`                                  | **Fill in** every key; never commit this file                             |
+| `api-tests/collections/`                | **Replace** placeholder requests with your API endpoints                  |
+| `api-tests/environments/`               | **Update** `baseUrl` for staging and production                           |
+| `appium/tests/smoke/`                   | **Add / modify** tests for your app's critical flows                      |
+| `appium/tests/regression/`              | **Add / modify** tests for your app's deeper flows                        |
+| `security/mobsf/scan-config.json`       | Tune severity thresholds if needed                                        |
+| `accessibility/axe-config.ts`           | Tune WCAG rule set if needed                                              |
+| `appium/config/android.conf.ts`         | Update device capabilities and BrowserStack device matrix                 |
+| `appium/config/ios.conf.ts`             | Update device capabilities and BrowserStack device matrix                 |
+| `config/env.ts`                         | Only modify if you need to add new env vars                               |
+| `.github/workflows/mobile-pipeline.yml` | Only modify to add new pipeline steps                                     |
+| `scripts/`                              | Only modify if you need custom reporting or upload logic                  |
 
 ---
 

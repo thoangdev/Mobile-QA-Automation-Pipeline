@@ -43,49 +43,101 @@ function optional(key: string, fallback: string): string {
  */
 export const Env = {
   // BrowserStack
-  get browserstackUsername()  { return required('BROWSERSTACK_USERNAME'); },
-  get browserstackAccessKey() { return required('BROWSERSTACK_ACCESS_KEY'); },
+  get browserstackUsername() {
+    return required('BROWSERSTACK_USERNAME');
+  },
+  get browserstackAccessKey() {
+    return required('BROWSERSTACK_ACCESS_KEY');
+  },
 
   // App hashes — populated by `npm run upload:android|ios` and passed to CI
-  get androidAppHash() { return optional('BS_ANDROID_APP_HASH', 'bs://PLACEHOLDER_APP_HASH'); },
-  get iosAppHash()     { return optional('BS_IOS_APP_HASH',     'bs://PLACEHOLDER_APP_HASH'); },
+  get androidAppHash() {
+    return optional('BS_ANDROID_APP_HASH', 'bs://PLACEHOLDER_APP_HASH');
+  },
+  get iosAppHash() {
+    return optional('BS_IOS_APP_HASH', 'bs://PLACEHOLDER_APP_HASH');
+  },
 
   // BrowserStack project label (shown in the BrowserStack dashboard)
-  get bsProjectName() { return optional('BS_PROJECT_NAME', 'Mobile QA Pipeline'); },
+  get bsProjectName() {
+    return optional('BS_PROJECT_NAME', 'Mobile QA Pipeline');
+  },
 
   // MobSF
-  get mobsfUrl()    { return required('MOBSF_URL').replace(/\/$/, ''); },
-  get mobsfApiKey() { return required('MOBSF_API_KEY'); },
+  get mobsfUrl() {
+    return required('MOBSF_URL').replace(/\/$/, '');
+  },
+  get mobsfApiKey() {
+    return required('MOBSF_API_KEY');
+  },
 
   // Percy
-  get percyToken() { return optional('PERCY_TOKEN', ''); },
+  get percyToken() {
+    return optional('PERCY_TOKEN', '');
+  },
 
   // Notifications
-  get slackWebhook()   { return required('SLACK_WEBHOOK'); },
-  get discordWebhook() { return required('DISCORD_WEBHOOK'); },
+  get slackWebhook() {
+    return required('SLACK_WEBHOOK');
+  },
+  get discordWebhook() {
+    return required('DISCORD_WEBHOOK');
+  },
 
   // Test credentials
-  get testEnv()      { return optional('TEST_ENV', 'staging') as 'staging' | 'production'; },
-  get testUsername() { return optional('TEST_USERNAME', 'placeholder@example.com'); },
-  get testPassword() { return optional('TEST_PASSWORD', 'PlaceholderPassword1!'); },
+  get testEnv() {
+    return optional('TEST_ENV', 'staging') as 'staging' | 'production';
+  },
+  get testUsername() {
+    return optional('TEST_USERNAME', 'placeholder@example.com');
+  },
+  get testPassword() {
+    return optional('TEST_PASSWORD', 'PlaceholderPassword1!');
+  },
 
   // CI / GitHub Actions context
-  get githubRunNumber()  { return optional('GITHUB_RUN_NUMBER',  '0'); },
-  get githubRefName()    { return optional('GITHUB_REF_NAME',    'local'); },
-  get githubServerUrl()  { return optional('GITHUB_SERVER_URL',  ''); },
-  get githubRepository() { return optional('GITHUB_REPOSITORY',  ''); },
+  get githubRunNumber() {
+    return optional('GITHUB_RUN_NUMBER', '0');
+  },
+  get githubRefName() {
+    return optional('GITHUB_REF_NAME', 'local');
+  },
+  get githubServerUrl() {
+    return optional('GITHUB_SERVER_URL', '');
+  },
+  get githubRepository() {
+    return optional('GITHUB_REPOSITORY', '');
+  },
 
   // Per-step pipeline result summaries (set by CI after each step, consumed by notifiers)
-  get reportSecurity()   { return optional('REPORT_SECURITY',   '? Critical  ? Medium'); },
-  get reportApi()        { return optional('REPORT_API',        '? Passed  ? Failed'); },
-  get reportSmoke()      { return optional('REPORT_SMOKE',      '? Passed  ? Failed'); },
-  get reportRegression() { return optional('REPORT_REGRESSION', '? Passed  ? Failed'); },
-  get reportVisual()     { return optional('REPORT_VISUAL',     '? Approved  ? Diffs'); },
-  get reportA11y()       { return optional('REPORT_A11Y',       '? Violations'); },
+  get reportSecurity() {
+    return optional('REPORT_SECURITY', '? Critical  ? Medium');
+  },
+  get reportApi() {
+    return optional('REPORT_API', '? Passed  ? Failed');
+  },
+  get reportSmoke() {
+    return optional('REPORT_SMOKE', '? Passed  ? Failed');
+  },
+  get reportRegression() {
+    return optional('REPORT_REGRESSION', '? Passed  ? Failed');
+  },
+  get reportVisual() {
+    return optional('REPORT_VISUAL', '? Approved  ? Diffs');
+  },
+  get reportA11y() {
+    return optional('REPORT_A11Y', '? Violations');
+  },
 
   // Logging
   get logLevel() {
-    return optional('LOG_LEVEL', 'info') as 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent';
+    return optional('LOG_LEVEL', 'info') as
+      | 'trace'
+      | 'debug'
+      | 'info'
+      | 'warn'
+      | 'error'
+      | 'silent';
   },
 } as const;
 

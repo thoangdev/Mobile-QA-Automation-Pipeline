@@ -2,17 +2,26 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class FilterScreen extends BasePage {
-  private get filterPanel()    { return $('~filter-panel'); }
-  private get categoryItems()  { return $$('~filter-category-item'); }
-  private get applyButton()    { return $('~filter-apply-button'); }
-  private get clearAllButton() { return $('~filter-clear-button'); }
+  private get filterPanel() {
+    return $('~filter-panel');
+  }
+  private get categoryItems() {
+    return $$('~filter-category-item');
+  }
+  private get applyButton() {
+    return $('~filter-apply-button');
+  }
+  private get clearAllButton() {
+    return $('~filter-clear-button');
+  }
 
-  protected get anchor()       { return this.filterPanel; }
+  protected get anchor() {
+    return this.filterPanel;
+  }
 
   async selectCategory(name: string): Promise<void> {
     await this.waitForLoad();
-    const items = await this.categoryItems;
-    for (const item of items) {
+    for await (const item of this.categoryItems) {
       if ((await item.getText()) === name) {
         await item.click();
         return;

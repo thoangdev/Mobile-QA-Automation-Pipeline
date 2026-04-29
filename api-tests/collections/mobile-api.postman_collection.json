@@ -6,9 +6,9 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "base_url",   "value": "{{BASE_URL}}",   "type": "string" },
-    { "key": "api_version","value": "v1",              "type": "string" },
-    { "key": "auth_token", "value": "",                "type": "string" }
+    { "key": "base_url", "value": "{{BASE_URL}}", "type": "string" },
+    { "key": "api_version", "value": "v1", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string" }
   ],
   "item": [
     {
@@ -40,7 +40,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{TEST_USERNAME}}\",\n  \"password\": \"{{TEST_PASSWORD}}\"\n}"
             },
-            "url": { "raw": "{{base_url}}/{{api_version}}/auth/login", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "login"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "auth", "login"]
+            }
           }
         },
         {
@@ -64,7 +68,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"bad@example.com\",\n  \"password\": \"WrongPassword!\"\n}"
             },
-            "url": { "raw": "{{base_url}}/{{api_version}}/auth/login", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "login"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "auth", "login"]
+            }
           }
         },
         {
@@ -83,7 +91,11 @@
           "request": {
             "method": "POST",
             "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
-            "url": { "raw": "{{base_url}}/{{api_version}}/auth/logout", "host": ["{{base_url}}"], "path": ["{{api_version}}", "auth", "logout"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "auth", "logout"]
+            }
           }
         }
       ]
@@ -113,7 +125,11 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
-            "url": { "raw": "{{base_url}}/{{api_version}}/users/me", "host": ["{{base_url}}"], "path": ["{{api_version}}", "users", "me"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "users", "me"]
+            }
           }
         },
         {
@@ -134,10 +150,14 @@
             "method": "PATCH",
             "header": [
               { "key": "Authorization", "value": "Bearer {{auth_token}}" },
-              { "key": "Content-Type",  "value": "application/json" }
+              { "key": "Content-Type", "value": "application/json" }
             ],
             "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Name\"\n}" },
-            "url": { "raw": "{{base_url}}/{{api_version}}/users/me", "host": ["{{base_url}}"], "path": ["{{api_version}}", "users", "me"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/users/me",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "users", "me"]
+            }
           }
         }
       ]
@@ -164,7 +184,11 @@
           "request": {
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{auth_token}}" }],
-            "url": { "raw": "{{base_url}}/{{api_version}}/products", "host": ["{{base_url}}"], "path": ["{{api_version}}", "products"] }
+            "url": {
+              "raw": "{{base_url}}/{{api_version}}/products",
+              "host": ["{{base_url}}"],
+              "path": ["{{api_version}}", "products"]
+            }
           }
         }
       ]

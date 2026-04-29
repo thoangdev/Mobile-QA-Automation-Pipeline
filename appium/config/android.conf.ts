@@ -1,16 +1,18 @@
-import type { Options } from '@wdio/types';
+import type { Capabilities, Options } from '@wdio/types';
 import { Env } from '../../config/env';
 import { sharedConfig } from './shared.conf';
 
-export const config: Options.Testrunner = {
+type TestrunnerConfig = Options.Testrunner & Capabilities.WithRequestedTestrunnerCapabilities;
+
+export const config: TestrunnerConfig = {
   ...sharedConfig,
 
   // BrowserStack remote hub
-  user:     Env.browserstackUsername,
-  key:      Env.browserstackAccessKey,
+  user: Env.browserstackUsername,
+  key: Env.browserstackAccessKey,
   hostname: 'hub.browserstack.com',
-  path:     '/wd/hub',
-  port:     443,
+  path: '/wd/hub',
+  port: 443,
   protocol: 'https',
 
   services: [['browserstack', { browserstackLocal: false }]],
@@ -18,14 +20,14 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       platformName: 'Android',
-      'appium:deviceName':       'Google Pixel 8',
-      'appium:platformVersion':  '14.0',
-      'appium:automationName':   'UiAutomator2',
-      'appium:app':              Env.androidAppHash,
+      'appium:deviceName': 'Google Pixel 8',
+      'appium:platformVersion': '14.0',
+      'appium:automationName': 'UiAutomator2',
+      'appium:app': Env.androidAppHash,
       'appium:newCommandTimeout': 90,
       'bstack:options': {
         projectName: Env.bsProjectName,
-        buildName:   `Build ${Env.githubRunNumber}`,
+        buildName: `Build ${Env.githubRunNumber}`,
         sessionName: 'Android Tests',
       },
     },
@@ -40,6 +42,6 @@ export const config: Options.Testrunner = {
     // },
   ],
 
-  specs:   ['./appium/tests/**/*.spec.ts'],
+  specs: ['./appium/tests/**/*.spec.ts'],
   exclude: [],
 };

@@ -34,10 +34,10 @@ Accessibility IDs (`~element-id`) are stable across OS versions and refactors. X
 
 ```typescript
 // Prefer this:
-$('~login-button')
+$('~login-button');
 
 // Avoid this:
-$('//android.widget.Button[@text="Log In"]')
+$('//android.widget.Button[@text="Log In"]');
 ```
 
 ### Work with your app team to add accessibility labels

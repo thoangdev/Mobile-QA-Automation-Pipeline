@@ -5,14 +5,23 @@ import { Env } from '../config/env';
 const SCAN_CONFIG_PATH = 'security/mobsf/scan-config.json';
 
 interface ScanConfig {
-  scan_targets:       { android: string; ios: string };
-  report_output:      string;
+  scan_targets: { android: string; ios: string };
+  report_output: string;
   severity_threshold: { block_on: string; warn_on: string[] };
 }
 
-interface MobSFUploadResponse { hash: string; file_name: string }
-interface MobSFFinding        { severity: string; title: string }
-interface MobSFReport         { findings?: MobSFFinding[]; appsec?: { security_score: number } }
+interface MobSFUploadResponse {
+  hash: string;
+  file_name: string;
+}
+interface MobSFFinding {
+  severity: string;
+  title: string;
+}
+interface MobSFReport {
+  findings?: MobSFFinding[];
+  appsec?: { security_score: number };
+}
 
 type Platform = 'android' | 'ios';
 
@@ -82,12 +91,12 @@ async function getReport(url: string, apiKey: string, hash: string): Promise<Mob
 }
 
 (async (): Promise<void> => {
-  const mobsfUrl = Env.mobsfUrl;   // throws EnvError if not set
-  const apiKey   = Env.mobsfApiKey;
+  const mobsfUrl = Env.mobsfUrl; // throws EnvError if not set
+  const apiKey = Env.mobsfApiKey;
 
-  const config   = loadScanConfig();
+  const config = loadScanConfig();
   const platform = resolvePlatform(process.argv[2]);
-  const appPath  = platform === 'ios' ? config.scan_targets.ios : config.scan_targets.android;
+  const appPath = platform === 'ios' ? config.scan_targets.ios : config.scan_targets.android;
 
   if (!fs.existsSync(appPath)) {
     throw new Error(

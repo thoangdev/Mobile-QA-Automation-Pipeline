@@ -10,7 +10,7 @@
     "rootDir": ".",
     "skipLibCheck": true,
     "paths": {
-      "@config/*":  ["./config/*"],
+      "@config/*": ["./config/*"],
       "@screens/*": ["./appium/screens/*"],
       "@scripts/*": ["./scripts/*"]
     }

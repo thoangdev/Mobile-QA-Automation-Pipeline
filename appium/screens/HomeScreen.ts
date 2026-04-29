@@ -2,16 +2,32 @@ import { BasePage } from './BasePage';
 
 // PLACEHOLDER selectors — replace '~*' accessibility IDs with real values from your app
 class HomeScreen extends BasePage {
-  private get header()         { return $('~home-header'); }
-  private get searchBar()      { return $('~search-bar'); }
-  private get settingsIcon()   { return $('~settings-icon'); }
-  private get cartIcon()       { return $('~cart-icon'); }
-  private get searchSubmit()   { return $('~search-submit-button'); }
+  private get header() {
+    return $('~home-header');
+  }
+  private get searchBar() {
+    return $('~search-bar');
+  }
+  private get settingsIcon() {
+    return $('~settings-icon');
+  }
+  private get cartIcon() {
+    return $('~cart-icon');
+  }
+  private get searchSubmit() {
+    return $('~search-submit-button');
+  }
   // Public — tests may assert on count
-  get featuredItems()          { return $$('~featured-item'); }
-  get profileIcon()            { return $('~profile-icon'); }
+  get featuredItems() {
+    return $$('~featured-item');
+  }
+  get profileIcon() {
+    return $('~profile-icon');
+  }
 
-  protected get anchor()       { return this.header; }
+  protected get anchor() {
+    return this.header;
+  }
 
   async openSettings(): Promise<void> {
     await this.waitForLoad();

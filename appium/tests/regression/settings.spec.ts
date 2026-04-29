@@ -61,11 +61,11 @@ describe('Regression: Settings', () => {
   it('should handle offline gracefully', async () => {
     // setNetworkConnection: 0 = no connection (Android only)
     // PLACEHOLDER: for iOS use network conditioner or a proxy instead
-    await driver.setNetworkConnection(0);
+    await driver.setNetworkConnection({ type: 0 });
     try {
       expect(await $('~offline-banner').isDisplayed()).toBe(true); // PLACEHOLDER: replace with real offline indicator selector
     } finally {
-      await driver.setNetworkConnection(6); // restore: wifi + data
+      await driver.setNetworkConnection({ type: 6 }); // restore: wifi + data
     }
   });
 });
