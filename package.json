@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test:smoke": "wdio run appium/config/android.conf.ts --grep @smoke",
+    "test:smoke:ios": "wdio run appium/config/ios.conf.ts --grep @smoke",
     "test:regression": "wdio run appium/config/android.conf.ts",
+    "test:regression:ios": "wdio run appium/config/ios.conf.ts",
     "test:api": "ts-node scripts/run-newman.ts",
     "test:visual": "percy exec -- wdio run appium/config/android.conf.ts",
     "test:a11y": "ts-node accessibility/axe-config.ts",
@@ -18,10 +20,14 @@
     "notify:slack": "ts-node scripts/send-slack-notification.ts",
     "notify:discord": "ts-node scripts/send-discord-notification.ts",
     "validate:env": "ts-node scripts/validate-env.ts",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"**/*.{ts,json,yml,md}\"",
     "format:check": "prettier --check \"**/*.{ts,json,yml,md}\"",
+    "audit": "npm audit --omit=dev --audit-level=high",
+    "clean": "rm -rf reports dist .nyc_output",
+    "prepare": "husky",
     "pipeline": "npm run validate:env && npm run scan:mobsf && npm run test:api && npm run test:smoke && npm run test:regression"
   },
   "dependencies": {
@@ -46,8 +52,19 @@
     "@wdio/globals": "^9.27.0",
     "@wdio/types": "^9.27.0",
     "eslint": "^8.57.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
     "prettier": "^3.8.0",
     "ts-node": "^10.9.0",
     "typescript": "^5.9.0"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,md}": [
+      "prettier --write"
+    ]
   }
 }

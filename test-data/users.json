@@ -1,0 +1,16 @@
+{
+  "users": {
+    "standard": {
+      "username": "PLACEHOLDER_replace_with_real_username",
+      "description": "Standard user with full app access"
+    },
+    "readOnly": {
+      "username": "readonly@example.com",
+      "description": "User with read-only permissions"
+    },
+    "newUser": {
+      "username": "new-user@example.com",
+      "description": "First-time user for onboarding flow"
+    }
+  }
+}

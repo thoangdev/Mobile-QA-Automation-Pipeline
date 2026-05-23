@@ -12,7 +12,8 @@
     "paths": {
       "@config/*": ["./config/*"],
       "@screens/*": ["./appium/screens/*"],
-      "@scripts/*": ["./scripts/*"]
+      "@scripts/*": ["./scripts/*"],
+      "@utils/*": ["./appium/utils/*"]
     }
   },
   "include": [
@@ -20,7 +21,8 @@
     "appium/**/*.ts",
     "percy/**/*.ts",
     "accessibility/**/*.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "test-data/**/*.ts"
   ],
   "exclude": ["node_modules", "dist", "reports"]
 }

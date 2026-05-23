@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      wdio:
+        patterns:
+          - "@wdio/*"
+          - "webdriverio"
+          - "appium"
+      typescript-tooling:
+        patterns:
+          - "typescript"
+          - "ts-node"
+          - "@typescript-eslint/*"
+          - "eslint"
+          - "prettier"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5

@@ -1,0 +1,6 @@
+# All files require review from the QA team lead by default.
+# Replace with real GitHub usernames or team slugs.
+* @thoangdev
+
+# CI/CD changes require extra scrutiny
+.github/workflows/ @thoangdev
