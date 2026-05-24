@@ -89,7 +89,7 @@ jobs:
       - run: npm run test:smoke
       - name: Upload Android smoke report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: smoke-android-${{ github.run_number }}
           path: reports/appium/
@@ -114,7 +114,7 @@ jobs:
       - run: npm run test:smoke:ios
       - name: Upload iOS smoke report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: smoke-ios-${{ github.run_number }}
           path: reports/appium/
@@ -138,7 +138,7 @@ jobs:
       - run: npm run test:visual
       - name: Upload regression report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: regression-android-${{ github.run_number }}
           path: reports/
@@ -162,7 +162,7 @@ jobs:
       - run: npm run test:regression:ios
       - name: Upload iOS regression report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: regression-ios-${{ github.run_number }}
           path: reports/appium/
