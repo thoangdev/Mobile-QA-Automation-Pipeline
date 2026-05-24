@@ -39,7 +39,7 @@
     "@wdio/mocha-framework": "^9.27.0",
     "@wdio/spec-reporter": "^9.27.0",
     "appium": "^2.19.0",
-    "dotenv": "^16.6.1",
+    "dotenv": "^17.4.2",
     "newman": "^6.2.2",
     "webdriverio": "^9.27.0"
   },
