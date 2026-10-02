@@ -21,7 +21,7 @@ env:
   MOBSF_URL: ${{ secrets.MOBSF_URL }}
   MOBSF_API_KEY: ${{ secrets.MOBSF_API_KEY }}
   PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
 jobs:
@@ -187,8 +187,8 @@ jobs:
   notify:
     name: Notify Team
     runs-on: ubuntu-latest
-    needs: [smoke-android, api, accessibility]
-    if: always()
+    needs: [lint, security, api, smoke-android, smoke-ios, regression-android, regression-ios, accessibility]
+    if: failure()
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

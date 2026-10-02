@@ -1,0 +1,26 @@
+name: Slack failure notifications (other workflows)
+
+on:
+  workflow_run:
+    workflows: [Security, 'Dependabot Updates']
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPOSITORY: ${{ github.repository }}
+          WORKFLOW: ${{ github.event.workflow_run.name }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then echo "SLACK_WEBHOOK_URL is not configured; skipping notification."; exit 0; fi
+          payload=$(jq -n --arg text ":x: *Workflow failed* — $REPOSITORY / $WORKFLOW on \`$BRANCH\`\n<$RUN_URL|View run>" '{text: $text}')
+          curl --fail --silent --show-error -H 'Content-type: application/json' --data "$payload" "$SLACK_WEBHOOK_URL"
